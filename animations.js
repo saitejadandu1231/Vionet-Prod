@@ -67,7 +67,26 @@ function initHeroFiberCanvas() {
       });
       pill.classList.add('active');
       pill.setAttribute('aria-selected', 'true');
-      currentView = pill.getAttribute('data-view');
+      currentView = pill.getAttribute('data-view') || 'full';
+
+      // Update telemetry dock immediately on pill selection
+      if (currentView === 'full') {
+        if (activeLayerEl) activeLayerEl.textContent = 'ALL 7 STRUCTURAL LAYERS • DIRECT BURIAL ARMORED';
+        if (activeSpecEl) activeSpecEl.textContent = 'ITU-T G.652.D / TELCORDIA GR-20-CORE COMPLIANT';
+        if (activeAttenEl) activeAttenEl.textContent = 'CRUSH RESISTANCE: 3000 N • WATERPROOF GEL FILLED';
+      } else if (currentView === 'cores') {
+        if (activeLayerEl) activeLayerEl.textContent = '12 TIA-598-C BUFFER TUBES & ITU-T G.652.D CORES';
+        if (activeSpecEl) activeSpecEl.textContent = '9/125µm LOW BEND-LOSS SILICA OPTICAL GLASS (COLOR-CODED)';
+        if (activeAttenEl) activeAttenEl.textContent = '≤ 0.18–0.19 dB/km ATTENUATION @ 1550nm (PASS)';
+      } else if (currentView === 'crosssection') {
+        if (activeLayerEl) activeLayerEl.textContent = 'END-FACE RADIAL CROSS SECTION (288-FIBER ASSEMBLY)';
+        if (activeSpecEl) activeSpecEl.textContent = 'CONCENTRIC 6-TUBE PBT STRANDING AROUND CENTRAL FRP';
+        if (activeAttenEl) activeAttenEl.textContent = 'CABLE OD: 14.8mm • ARMOR: 0.15mm ECCS STEEL TAPE';
+      } else if (currentView === 'lasers') {
+        if (activeLayerEl) activeLayerEl.textContent = '1310nm / 1550nm WAVELENGTH COHERENT LASER PROPAGATION';
+        if (activeSpecEl) activeSpecEl.textContent = 'DUAL-WINDOW PHOTON TRANSMISSION (C-BAND & O-BAND)';
+        if (activeAttenEl) activeAttenEl.textContent = 'TX OPTICAL POWER: +3.0 dBm • DISPERSION: ≤ 18 ps/(nm·km)';
+      }
     });
   });
 
@@ -231,17 +250,218 @@ function initHeroFiberCanvas() {
       ctx.stroke();
     }
 
+    // ==========================================
+    // MODE 3: FULL-CANVAS RADIAL CROSS-SECTION
+    // ==========================================
+    if (currentView === 'crosssection') {
+      const centerX = width * 0.5;
+      const csCenterY = height * 0.5;
+      const maxRadius = Math.min(width * 0.38, height * 0.42, 135);
+
+      // Title & Telemetry Header
+      ctx.save();
+      ctx.fillStyle = '#00f0ff';
+      ctx.font = 'bold 11px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('HIGH-PRECISION 288-CORE RADIAL CROSS SECTION (TIA-598-C)', centerX, 24);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+      ctx.font = '9px monospace';
+      ctx.fillText('DIRECT BURIAL DIELECTRIC ARMORED OPTICAL CABLE ASSEMBLY', centerX, 38);
+      ctx.restore();
+
+      // Outer Glow & Shielding Ring
+      ctx.save();
+      ctx.shadowColor = 'rgba(0, 123, 255, 0.3)';
+      ctx.shadowBlur = 18;
+      ctx.fillStyle = 'rgba(10, 16, 30, 0.95)';
+      ctx.strokeStyle = '#007BFF';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(centerX, csCenterY, maxRadius + 14, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+
+      // Layer 1: HDPE Jacket Ring
+      const rHDPE = maxRadius;
+      const gradHDPE = ctx.createRadialGradient(centerX, csCenterY, rHDPE * 0.85, centerX, csCenterY, rHDPE);
+      gradHDPE.addColorStop(0, '#1e293b');
+      gradHDPE.addColorStop(0.7, '#0f172a');
+      gradHDPE.addColorStop(1, '#020617');
+      ctx.fillStyle = gradHDPE;
+      ctx.beginPath();
+      ctx.arc(centerX, csCenterY, rHDPE, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Layer 2: Corrugated Steel Tape Armor (CSTA)
+      const rArmor = rHDPE * 0.88;
+      ctx.fillStyle = '#475569';
+      ctx.beginPath();
+      ctx.arc(centerX, csCenterY, rArmor, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+
+      // Armor Corrugation Teeth
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+      ctx.lineWidth = 2;
+      for (let a = 0; a < 36; a++) {
+        const rad = (a / 36) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(centerX + Math.cos(rad) * (rArmor - 3), csCenterY + Math.sin(rad) * (rArmor - 3));
+        ctx.lineTo(centerX + Math.cos(rad) * rArmor, csCenterY + Math.sin(rad) * rArmor);
+        ctx.stroke();
+      }
+
+      // Layer 3: Inner Polyethylene Sheath & Water-Blocking Tape
+      const rInner = rArmor * 0.88;
+      ctx.fillStyle = '#0369a1';
+      ctx.beginPath();
+      ctx.arc(centerX, csCenterY, rInner, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // Aramid Yarn Yellow Flecks
+      ctx.fillStyle = '#eab308';
+      for (let y = 0; y < 16; y++) {
+        const radY = (y / 16) * Math.PI * 2 + 0.1;
+        ctx.beginPath();
+        ctx.arc(centerX + Math.cos(radY) * (rInner - 3), csCenterY + Math.sin(radY) * (rInner - 3), 1.2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Inner Buffer Tube Bed
+      const rBed = rInner * 0.9;
+      ctx.fillStyle = '#0a101d';
+      ctx.beginPath();
+      ctx.arc(centerX, csCenterY, rBed, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Layer 4: Central FRP (Fiber Reinforced Polymer) Strength Member
+      const rFRP = rBed * 0.32;
+      ctx.save();
+      ctx.shadowColor = '#ffffff';
+      ctx.shadowBlur = 8;
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(centerX, csCenterY, rFRP, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 7.5px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('FRP', centerX, csCenterY + 2.5);
+
+      // Layer 5: 12 Color-Coded PBT Loose Buffer Tubes arranged radially
+      const rTubeRing = (rBed + rFRP) * 0.52;
+      const rTube = (rBed - rFRP) * 0.28;
+      const totalTubes = 12;
+
+      for (let i = 0; i < totalTubes; i++) {
+        const angle = (i / totalTubes) * Math.PI * 2 - Math.PI / 2;
+        const tx = centerX + Math.cos(angle) * rTubeRing;
+        const ty = csCenterY + Math.sin(angle) * rTubeRing;
+        const strand = tiaColors[i];
+
+        // Buffer tube outer circle
+        ctx.save();
+        ctx.fillStyle = strand.hex;
+        ctx.shadowColor = strand.hex;
+        ctx.shadowBlur = 6;
+        ctx.beginPath();
+        ctx.arc(tx, ty, rTube, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+        ctx.restore();
+
+        // Gel interior & 4 individual fiber dots inside each tube
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+        ctx.beginPath();
+        ctx.arc(tx, ty, rTube * 0.72, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 4 Micro glass optical fibers inside tube
+        ctx.fillStyle = '#ffffff';
+        const innerOffset = rTube * 0.38;
+        ctx.beginPath();
+        ctx.arc(tx - innerOffset, ty - innerOffset, 0.9, 0, Math.PI * 2);
+        ctx.arc(tx + innerOffset, ty - innerOffset, 0.9, 0, Math.PI * 2);
+        ctx.arc(tx - innerOffset, ty + innerOffset, 0.9, 0, Math.PI * 2);
+        ctx.arc(tx + innerOffset, ty + innerOffset, 0.9, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Tube label number
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 7px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(`${i + 1}`, tx, ty + 2.5);
+
+        // Outside callout label
+        if (width >= 560) {
+          const lx = centerX + Math.cos(angle) * (rHDPE + 24);
+          const ly = csCenterY + Math.sin(angle) * (rHDPE + 18);
+          ctx.fillStyle = strand.hex;
+          ctx.font = '7.5px monospace';
+          ctx.textAlign = Math.cos(angle) > 0.1 ? 'left' : (Math.cos(angle) < -0.1 ? 'right' : 'center');
+          ctx.fillText(`T${i + 1}:${strand.name}`, lx, ly);
+        }
+      }
+
+      // Live Laser Propagation pulse in cross section mode
+      const pulseT = (Date.now() % 2000) / 2000;
+      ctx.save();
+      ctx.strokeStyle = `rgba(0, 240, 255, ${1 - pulseT})`;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(centerX, csCenterY, rTubeRing + (pulseT * rTube), 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+
+      animationFrameId = requestAnimationFrame(render);
+      return;
+    }
+
+    // ==========================================
+    // MODES: FULL, CORES, OR LASERS
+    // ==========================================
+
+    // Dynamic layer opacities and offsets based on currentView
+    const isCoresMode = (currentView === 'cores');
+    const isLasersMode = (currentView === 'lasers');
+
     // 2. Central FRP Strength Member
     ctx.fillStyle = '#ffffff';
     ctx.beginPath();
     ctx.roundRect(startX, centerY - 3, width + 40, 6, 2);
     ctx.fill();
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.fillStyle = isLasersMode ? 'rgba(0, 240, 255, 0.7)' : 'rgba(255, 255, 255, 0.4)';
     ctx.font = '7.5px monospace';
     ctx.fillText('CENTRAL FRP STRENGTH MEMBER', 20, centerY - 6);
 
+    // In 'cores' mode, push back jacket cuts to give maximum stage to the 12 tubes & glass strands
+    const l1CutX = isCoresMode ? width * 0.12 : (isLasersMode ? width * 0.15 : layers[0].cutX * width);
+    const l2CutX = isCoresMode ? width * 0.22 : (isLasersMode ? width * 0.26 : layers[1].cutX * width);
+    const l3CutX = isCoresMode ? width * 0.32 : (isLasersMode ? width * 0.38 : layers[2].cutX * width);
+    const l4CutX = isCoresMode ? width * 0.50 : (isLasersMode ? width * 0.52 : layers[3].cutX * width);
+
+    // Opacities for physical sheath in laser or cores modes
+    const sheathAlpha = isLasersMode ? 0.35 : (isCoresMode ? 0.75 : 1.0);
+
     // 3. LAYER 1: OUTER BLACK HDPE JACKET
-    const l1CutX = layers[0].cutX * width;
+    ctx.save();
+    ctx.globalAlpha = sheathAlpha;
     const l1Radius = layers[0].radius;
     const l1Grad = ctx.createLinearGradient(0, centerY - l1Radius, 0, centerY + l1Radius);
     l1Grad.addColorStop(0, '#2d3748');
@@ -266,10 +486,12 @@ function initHeroFiberCanvas() {
     }
     ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
     ctx.font = 'bold 8px monospace';
-    ctx.fillText('VIONET OPTICAL 288F ARMORED SM G.652.D [TIA-598-C] 00482M', 25, centerY + 4);
+    ctx.fillText('VIONET OPTICAL 288F ARMORED SM G.652.D [TIA-598-C]', 25, centerY + 4);
+    ctx.restore();
 
     // 4. LAYER 2: CORRUGATED STEEL TAPE ARMOR (CSTA)
-    const l2CutX = layers[1].cutX * width;
+    ctx.save();
+    ctx.globalAlpha = sheathAlpha;
     const l2Radius = layers[1].radius;
     const l2Grad = ctx.createLinearGradient(0, centerY - l2Radius, 0, centerY + l2Radius);
     l2Grad.addColorStop(0, '#94a3b8');
@@ -292,9 +514,11 @@ function initHeroFiberCanvas() {
       ctx.lineTo(x + 3, centerY + l2Radius);
       ctx.stroke();
     }
+    ctx.restore();
 
     // 5. LAYER 3: INNER SHEATH & ARAMID YARN
-    const l3CutX = layers[2].cutX * width;
+    ctx.save();
+    ctx.globalAlpha = sheathAlpha;
     const l3Radius = layers[2].radius;
     const l3Grad = ctx.createLinearGradient(0, centerY - l3Radius, 0, centerY + l3Radius);
     l3Grad.addColorStop(0, '#0284c7');
@@ -315,58 +539,78 @@ function initHeroFiberCanvas() {
       ctx.lineTo(x + 8, centerY + l3Radius - 2);
       ctx.stroke();
     }
+    ctx.restore();
 
     // 6. LAYER 4: 12-FIBER LOOSE BUFFER TUBES
-    const l4CutX = layers[3].cutX * width;
-    const bufferCount = 6;
+    // If cores mode, show all 12 buffer tubes explicitly staggered!
+    const bufferCount = isCoresMode ? 12 : 6;
     for (let b = 0; b < bufferCount; b++) {
       const bColor = tiaColors[b].hex;
-      const bSpread = (b - 2.5) * 8.5;
+      const bSpread = isCoresMode ? (b - 5.5) * 5.2 : (b - 2.5) * 8.5;
       const bY = centerY + bSpread;
+      const tubeHeight = isCoresMode ? 4.5 : 7;
 
+      ctx.save();
       ctx.fillStyle = bColor;
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+      ctx.shadowColor = isLasersMode ? bColor : 'transparent';
+      ctx.shadowBlur = isLasersMode ? 8 : 0;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.roundRect(l3CutX - 4, bY - 3.5, (l4CutX - l3CutX) + 8, 7, 3);
+      ctx.roundRect(l3CutX - 4, bY - (tubeHeight / 2), (l4CutX - l3CutX) + 8, tubeHeight, 2.5);
       ctx.fill();
       ctx.stroke();
+
+      if (isCoresMode && width >= 520) {
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 6.5px monospace';
+        ctx.fillText(`T${b + 1}`, l3CutX + 3, bY + 2);
+      }
+      ctx.restore();
     }
 
-    // 7. LAYER 5: INDIVIDUAL GLASS OPTICAL FIBERS
+    // 7. LAYER 5: INDIVIDUAL GLASS OPTICAL FIBERS (All 12 TIA-598-C)
     const strandCount = 12;
     for (let f = 0; f < strandCount; f++) {
       const strand = tiaColors[f];
       const startFibersX = l4CutX;
       const spreadY = (f - 5.5) * 9.5;
       const fy = centerY + spreadY;
+      const tubeStartY = isCoresMode ? centerY + (f - 5.5) * 5.2 : centerY + (f - 5.5) * 3;
 
+      ctx.save();
       ctx.beginPath();
-      ctx.moveTo(startFibersX, centerY + (f - 5.5) * 3);
+      ctx.moveTo(startFibersX, tubeStartY);
       ctx.bezierCurveTo(
-        startFibersX + 40, centerY + (f - 5.5) * 3,
-        startFibersX + 70, fy,
+        startFibersX + 45, tubeStartY,
+        startFibersX + 75, fy,
         width + 10, fy
       );
       ctx.strokeStyle = strand.hex;
-      ctx.lineWidth = (hoveredFiber === strand) ? 2.8 : 1.6;
-      ctx.globalAlpha = (hoveredFiber && hoveredFiber !== strand) ? 0.35 : 0.85;
+      ctx.lineWidth = (hoveredFiber === strand || isCoresMode) ? 2.4 : (isLasersMode ? 2.0 : 1.6);
+      ctx.globalAlpha = (hoveredFiber && hoveredFiber !== strand) ? 0.35 : 1.0;
+      if (isLasersMode) {
+        ctx.shadowColor = strand.hex;
+        ctx.shadowBlur = 10;
+      }
       ctx.stroke();
-      ctx.globalAlpha = 1;
+      ctx.restore();
 
+      // Fiber Strand Name Tag & Micron Rating
       ctx.fillStyle = strand.hex;
-      ctx.font = '7.5px monospace';
-      ctx.fillText(`${f + 1}.${strand.name}`, width - 68, fy - 3);
+      ctx.font = isCoresMode ? 'bold 8px monospace' : '7.5px monospace';
+      ctx.fillText(isCoresMode ? `${f + 1}.${strand.name} (9/125µm)` : `${f + 1}.${strand.name}`, width - 82, fy - 3);
 
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
-      ctx.arc(width - 5, fy, 1.8, 0, Math.PI * 2);
+      ctx.arc(width - 5, fy, isCoresMode ? 2.2 : 1.8, 0, Math.PI * 2);
       ctx.fill();
     }
 
-    // 8. LASER PHOTON STREAMS
+    // 8. LASER PHOTON STREAMS (High intensity and dual wavelength in 'lasers' mode)
+    const activePhotonSpeedMultiplier = isLasersMode ? 2.2 : 1.0;
     photonPulses.forEach(pulse => {
-      pulse.progress += pulse.speed;
+      pulse.progress += pulse.speed * activePhotonSpeedMultiplier;
       if (pulse.progress > 1) pulse.progress = 0;
 
       const f = pulse.fiberIdx;
@@ -374,11 +618,12 @@ function initHeroFiberCanvas() {
       const startFibersX = l4CutX;
       const spreadY = (f - 5.5) * 9.5;
       const fy = centerY + spreadY;
+      const tubeStartY = isCoresMode ? centerY + (f - 5.5) * 5.2 : centerY + (f - 5.5) * 3;
 
       const t = pulse.progress;
-      const p0 = { x: startFibersX, y: centerY + (f - 5.5) * 3 };
-      const p1 = { x: startFibersX + 40, y: centerY + (f - 5.5) * 3 };
-      const p2 = { x: startFibersX + 70, y: fy };
+      const p0 = { x: startFibersX, y: tubeStartY };
+      const p1 = { x: startFibersX + 45, y: tubeStartY };
+      const p2 = { x: startFibersX + 75, y: fy };
       const p3 = { x: width + 10, y: fy };
 
       const mt = 1 - t;
@@ -386,23 +631,46 @@ function initHeroFiberCanvas() {
       const curY = mt * mt * mt * p0.y + 3 * mt * mt * t * p1.y + 3 * mt * t * t * p2.y + t * t * t * p3.y;
 
       ctx.save();
-      ctx.shadowColor = strand.hex;
-      ctx.shadowBlur = 10;
+      // In laser mode, alternate 1310nm (cyan) and 1550nm (amber/lime) high-energy glow
+      const is1550nm = (f % 2 === 1);
+      const laserColor = isLasersMode ? (is1550nm ? '#00e676' : '#00f0ff') : strand.hex;
+      ctx.shadowColor = laserColor;
+      ctx.shadowBlur = isLasersMode ? 16 : 10;
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
-      ctx.arc(curX, curY, pulse.size, 0, Math.PI * 2);
+      ctx.arc(curX, curY, isLasersMode ? pulse.size * 1.4 : pulse.size, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.fillStyle = strand.hex;
-      ctx.globalAlpha = 0.7;
+      ctx.fillStyle = laserColor;
+      ctx.globalAlpha = 0.75;
       ctx.beginPath();
-      ctx.arc(curX, curY, pulse.size + 1.8, 0, Math.PI * 2);
+      ctx.arc(curX, curY, (isLasersMode ? pulse.size * 1.4 : pulse.size) + (isLasersMode ? 3.0 : 1.8), 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
     });
 
+    // 8B. In 'lasers' mode: Display live optical wavelength overlay
+    if (isLasersMode) {
+      ctx.save();
+      ctx.fillStyle = 'rgba(6, 11, 23, 0.85)';
+      ctx.strokeStyle = '#00e676';
+      ctx.lineWidth = 1;
+      ctx.roundRect(16, 16, 230, 48, 6);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#00e676';
+      ctx.font = 'bold 8.5px monospace';
+      ctx.fillText('LIVE OPTICAL TRANSMISSION TELEMETRY', 26, 32);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '8px monospace';
+      ctx.fillText('λ: 1310nm (O-BAND) & 1550nm (C-BAND)', 26, 46);
+      ctx.fillText('ATTENUATION: 0.184 dB/km | TX: +3 dBm', 26, 57);
+      ctx.restore();
+    }
+
     // 9. LAYER INSPECTION HIGHLIGHT
-    if (hoveredLayer && !hoveredFiber) {
+    if (hoveredLayer && !hoveredFiber && currentView === 'full') {
       ctx.save();
       ctx.fillStyle = 'rgba(0, 123, 255, 0.15)';
       ctx.strokeStyle = '#007BFF';
@@ -414,8 +682,8 @@ function initHeroFiberCanvas() {
       ctx.restore();
     }
 
-    // 10. End-Face Cross Section Inset View
-    if (currentView === 'crosssection' || currentView === 'full') {
+    // 10. End-Face Cross Section Inset View (Only shown in 'full' mode)
+    if (currentView === 'full') {
       const csX = width - 85;
       const csY = 70;
       const csR = 34;

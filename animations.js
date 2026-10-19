@@ -47,10 +47,10 @@ function initHeroFiberCanvas() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = width * dpr;
     canvas.height = height * dpr;
-    ctx.scale(dpr, dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  requestAnimationFrame(resize);
+  resize();
   window.addEventListener('resize', () => {
     requestAnimationFrame(resize);
   });
@@ -1572,17 +1572,19 @@ function initLidarLaserSweep() {
       const beamEndX = scannerHeadX + Math.sin(bAngle) * beamLen;
       const beamEndY = scannerHeadY - Math.cos(bAngle) * beamLen;
 
-      const beamGrad = ctx.createLinearGradient(scannerHeadX, scannerHeadY, beamEndX, beamEndY);
-      beamGrad.addColorStop(0, 'rgba(0, 123, 255, 0.75)');
-      beamGrad.addColorStop(0.7, 'rgba(0, 240, 255, 0.25)');
-      beamGrad.addColorStop(1, 'rgba(0, 240, 255, 0)');
+      if (Number.isFinite(scannerHeadX) && Number.isFinite(scannerHeadY) && Number.isFinite(beamEndX) && Number.isFinite(beamEndY)) {
+        const beamGrad = ctx.createLinearGradient(scannerHeadX, scannerHeadY, beamEndX, beamEndY);
+        beamGrad.addColorStop(0, 'rgba(0, 123, 255, 0.75)');
+        beamGrad.addColorStop(0.7, 'rgba(0, 240, 255, 0.25)');
+        beamGrad.addColorStop(1, 'rgba(0, 240, 255, 0)');
 
-      ctx.strokeStyle = beamGrad;
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.moveTo(scannerHeadX, scannerHeadY);
-      ctx.lineTo(beamEndX, beamEndY);
-      ctx.stroke();
+        ctx.strokeStyle = beamGrad;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(scannerHeadX, scannerHeadY);
+        ctx.lineTo(beamEndX, beamEndY);
+        ctx.stroke();
+      }
     }
 
     // Circular 360-degree LiDAR dome emitter pulse
@@ -1812,7 +1814,8 @@ function initAmbientFiberBackground() {
   if (!canvas) return;
 
   const ctx = canvas.getContext('2d');
-  let width, height;
+  let width = window.innerWidth || 1200;
+  let height = window.innerHeight || 800;
   let animId;
 
   function resize() {
@@ -1821,10 +1824,10 @@ function initAmbientFiberBackground() {
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     canvas.width = width * dpr;
     canvas.height = height * dpr;
-    ctx.scale(canvas.width / width, canvas.height / height);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  requestAnimationFrame(resize);
+  resize();
   window.addEventListener('resize', () => {
     requestAnimationFrame(resize);
   });
@@ -1980,17 +1983,19 @@ function initAmbientFiberBackground() {
         const tailPx = tailX + Math.cos(normAngle) * strandOffset;
         const tailPy = tailY + Math.sin(normAngle) * strandOffset;
 
-        const tailGrad = ctx.createLinearGradient(tailPx, tailPy, px, py);
-        tailGrad.addColorStop(0, 'rgba(0,0,0,0)');
-        tailGrad.addColorStop(1, strand.color);
+        if (Number.isFinite(tailPx) && Number.isFinite(tailPy) && Number.isFinite(px) && Number.isFinite(py)) {
+          const tailGrad = ctx.createLinearGradient(tailPx, tailPy, px, py);
+          tailGrad.addColorStop(0, 'rgba(0,0,0,0)');
+          tailGrad.addColorStop(1, strand.color);
 
-        ctx.beginPath();
-        ctx.moveTo(tailPx, tailPy);
-        ctx.lineTo(px, py);
-        ctx.strokeStyle = tailGrad;
-        ctx.globalAlpha = 0.08;
-        ctx.lineWidth = strand.width;
-        ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(tailPx, tailPy);
+          ctx.lineTo(px, py);
+          ctx.strokeStyle = tailGrad;
+          ctx.globalAlpha = 0.08;
+          ctx.lineWidth = strand.width;
+          ctx.stroke();
+        }
 
         // Atom particle core (very light)
         ctx.beginPath();

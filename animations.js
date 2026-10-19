@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   init5GBeamVisualizer();
   initLidarLaserSweep();
   initMobileMenu();
+  initFrictionlessScheduler();
 });
 
 /* -----------------------------------------------------------
@@ -2071,3 +2072,103 @@ function initAmbientFiberBackground() {
 
   draw();
 }
+
+/* -----------------------------------------------------------
+ * 10. FRICTIONLESS DISCOVERY SCHEDULER (ZERO-WAITING)
+ * Interactive date chips, time slot picker, and instant calendar booking
+ * ----------------------------------------------------------- */
+function initFrictionlessScheduler() {
+  function setupSchedulerInstance(suffix) {
+    const tabCalendar = document.getElementById('tabBtnCalendar' + suffix);
+    const tabQuote = document.getElementById('tabBtnQuote' + suffix);
+    const panelCalendar = document.getElementById('panelCalendar' + suffix);
+    const panelQuote = document.getElementById('panelQuote' + suffix);
+
+    if (tabCalendar && tabQuote && panelCalendar && panelQuote) {
+      tabCalendar.addEventListener('click', () => {
+        tabCalendar.classList.add('active');
+        tabCalendar.setAttribute('aria-selected', 'true');
+        tabQuote.classList.remove('active');
+        tabQuote.setAttribute('aria-selected', 'false');
+        panelCalendar.classList.add('active');
+        panelQuote.classList.remove('active');
+      });
+
+      tabQuote.addEventListener('click', () => {
+        tabQuote.classList.add('active');
+        tabQuote.setAttribute('aria-selected', 'true');
+        tabCalendar.classList.remove('active');
+        tabCalendar.setAttribute('aria-selected', 'false');
+        panelQuote.classList.add('active');
+        panelCalendar.classList.remove('active');
+      });
+    }
+
+    // Date Chips
+    const dateChips = document.querySelectorAll('#bookingDateChips' + suffix + ' .date-chip');
+    dateChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        dateChips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+      });
+    });
+
+    // Time Slots
+    const timeSlots = document.querySelectorAll('#bookingTimeSlots' + suffix + ' .time-slot-btn');
+    timeSlots.forEach(slot => {
+      slot.addEventListener('click', () => {
+        timeSlots.forEach(s => s.classList.remove('active'));
+        slot.classList.add('active');
+      });
+    });
+  }
+
+  setupSchedulerInstance('');
+  setupSchedulerInstance('Contact');
+}
+
+// Global Instant Booking Handler
+window.confirmInstantBooking = function(suffix = '') {
+  const nameInput = document.getElementById('bookingName' + suffix);
+  const emailInput = document.getElementById('bookingEmail' + suffix);
+  const tzSelect = document.getElementById('bookingTimezone' + suffix);
+  const activeDate = document.querySelector('#bookingDateChips' + suffix + ' .date-chip.active');
+  const activeTime = document.querySelector('#bookingTimeSlots' + suffix + ' .time-slot-btn.active');
+  const successBox = document.getElementById('bookingSuccessBox' + suffix);
+  const form = document.getElementById('instantBookingForm' + suffix);
+
+  const selectedDate = activeDate ? activeDate.getAttribute('data-date') : 'Tomorrow';
+  const selectedTime = activeTime ? activeTime.getAttribute('data-time') : '10:00 AM';
+  const selectedTz = tzSelect ? tzSelect.value : 'US Central Time (CT)';
+
+  if (form) form.style.display = 'none';
+  if (successBox) successBox.classList.add('show');
+
+  const confDetails = document.getElementById('confDetails' + suffix);
+  const confTz = document.getElementById('confTz' + suffix);
+  if (confDetails) confDetails.textContent = `30-Min Telecom Discovery • ${selectedDate} @ ${selectedTime}`;
+  if (confTz) confTz.textContent = `Timezone: ${selectedTz} (Dedicated Vionet Engineering Lead)`;
+
+  // Generate dynamic Google Calendar URL
+  const gcalTitle = encodeURIComponent('Vionet Engineering - 30-Min Telecom Discovery');
+  const gcalDetails = encodeURIComponent('Telecom Project Discovery session with Vionet Engineering USA & Global delivery leads.\nPhone: +1 973-889-9406\nEmail: info@vionetengineering.com\nDiscussion: FTTx, 5G Wireless, GIS/LiDAR, Pole OCALC');
+  const gcalLoc = encodeURIComponent('Google Meet Video Conference / Dial-in (+1 973-889-9406)');
+  const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${gcalTitle}&details=${gcalDetails}&location=${gcalLoc}`;
+
+  const btnGcal = document.getElementById('btnGoogleCal' + suffix);
+  if (btnGcal) btnGcal.setAttribute('href', gcalUrl);
+
+  // Downloadable .ICS File Generation
+  const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Vionet Engineering//Discovery Call//EN\nBEGIN:VEVENT\nSUMMARY:Vionet Engineering - 30-Min Telecom Discovery\nDESCRIPTION:Telecom Project Discovery session with Vionet Engineering USA & Global delivery leads.\nLOCATION:Google Meet Video Conference / +1 973-889-9406\nSTATUS:CONFIRMED\nEND:VEVENT\nEND:VCALENDAR`;
+  const blob = new Blob([icsContent.replace(/\\n/g, '\n')], { type: 'text/calendar;charset=utf-8' });
+  const icsUrl = URL.createObjectURL(blob);
+  const btnIcs = document.getElementById('btnDownloadIcs' + suffix);
+  if (btnIcs) {
+    btnIcs.setAttribute('href', icsUrl);
+    btnIcs.setAttribute('download', 'Vionet-Discovery-Call.ics');
+  }
+};
+
+window.confirmInstantBookingContact = function() {
+  window.confirmInstantBooking('Contact');
+};

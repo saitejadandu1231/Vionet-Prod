@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Vionet Engineering delivers end-to-end telecom engineering, FTTx network design, 5G wireless construction, GIS mapping, and field engineering across the United States.">
-  <meta name="theme-color" content="#060911">
+  <meta name="theme-color" content="#040711">
   <title>Vionet Engineering | Designing Tomorrow's Networks, Today</title>
   
   <link rel="stylesheet" href="styles.css">
@@ -12,24 +12,23 @@
 </head>
 <body>
 
-  <!-- CAD Blueprint Grid & Crosshair Overlays -->
-  <div class="cad-grid-overlay" aria-hidden="true"></div>
-  <div class="cad-crosshairs" aria-hidden="true"></div>
+  <!-- Ambient Light Halos & Fiber Optic Network Background -->
+  <div class="ambient-glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow-2" aria-hidden="true"></div>
+  <canvas id="ambientFiberBgCanvas" class="ambient-fiber-canvas" aria-hidden="true"></canvas>
 
   <!-- Sticky Global Navigation -->
   <nav class="navbar" aria-label="Main Navigation">
     <a href="#" class="brand-wrapper">
       <img src="assets/brand/vionet-logo.webp" alt="Vionet Engineering Logo" class="brand-logo-img" width="150" height="44">
-      <span class="brand-badge">US TELECOM</span>
+      
     </a>
 
     <ul class="nav-links" id="navLinks">
       <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#pipeline" class="nav-link">How We Work</a></li>
       <li><a href="#services" class="nav-link">Engineering Services</a></li>
-      <li><a href="#wireless" class="nav-link">Wireless</a></li>
-      <li><a href="#gis" class="nav-link">GIS & Mapping</a></li>
-      <li><a href="#field" class="nav-link">Field Services</a></li>
-      <li><a href="#careers" class="nav-link">Careers</a></li>
+      <li><a href="careers.html" class="nav-link">Careers</a></li>
       <li><a href="#contactus" class="nav-link">Contact</a></li>
     </ul>
 
@@ -45,13 +44,10 @@
   </nav>
 
   <main>
-    <!-- HERO SECTION -->
+    <!-- HERO SECTION WITH INTERACTIVE FIBER CANVAS -->
     <section class="hero-section" id="hero">
       <div class="hero-content">
-        <div class="hero-pill">
-          <span class="pulse-dot"></span>
-          <span>EMPOWERING THE FUTURE OF CONNECTIVITY</span>
-        </div>
+       
         <h1 class="hero-title">
           Designing Tomorrow's <br>
           <span class="text-gradient">Networks, Today</span>
@@ -65,8 +61,8 @@
             <span>Let's Work Together</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
-          <a href="#services" class="btn-outline">
-            <span>Explore Engineering Matrix</span>
+          <a href="#pipeline" class="btn-outline">
+            <span>Explore Lifecycle Pipeline</span>
           </a>
         </div>
 
@@ -86,13 +82,56 @@
         </div>
       </div>
 
-      <!-- Animated Vector Optical Fiber Pulse Canvas -->
-      <div class="hero-visualizer" aria-label="Real-time optical fiber routing schematic">
-        <div class="canvas-cad-hud">
-          <span>OSP / ISP ROUTING BACKHAUL</span>
-          <span>ACTIVE CONDUIT NODES: 6</span>
+      <!-- Realistic 3D Cross-Section Fiber Optic Cable Assembly -->
+      <div class="hero-fiber-showcase" aria-label="Armored Fiber Optic Cable Interactive Anatomy">
+        <!-- Showcase Header -->
+        <div class="hero-fiber-header">
+          <div class="fiber-title-row">
+            <span class="fiber-title">288-CORE ARMORED DIELECTRIC FIBER OPTIC CABLE</span>
+            <span class="fiber-badge">TIA-598-C COLOR CODE</span>
+          </div>
+
+          <!-- Interactive Cable Anatomy Mode Switcher -->
+          <div class="cable-mode-pills" role="tablist" aria-label="Cable Anatomy Layers">
+            <button class="cable-pill active" role="tab" aria-selected="true" id="tab-cable-full" aria-controls="fiberAssemblyCanvas" data-view="full" title="Complete 3D Optical Cable Assembly">
+              <span>ALL LAYERS</span>
+            </button>
+            <button class="cable-pill" role="tab" aria-selected="false" id="tab-cable-cores" aria-controls="fiberAssemblyCanvas" data-view="cores" title="Individual Glass Optical Fibers">
+              <span class="pill-dot" style="background: #007BFF;"></span>
+              <span>12-FIBER TUBES</span>
+            </button>
+            <button class="cable-pill" role="tab" aria-selected="false" id="tab-cable-crosssection" aria-controls="fiberAssemblyCanvas" data-view="crosssection" title="End-Face Cross Section">
+              <span class="pill-dot" style="background: #FF7300;"></span>
+              <span>CROSS SECTION</span>
+            </button>
+            <button class="cable-pill" role="tab" aria-selected="false" id="tab-cable-lasers" aria-controls="fiberAssemblyCanvas" data-view="lasers" title="Live Wavelength Photon Streams">
+              <span class="pill-dot" style="background: #00e676;"></span>
+              <span>1310/1550nm LIGHT</span>
+            </button>
+          </div>
         </div>
-        <canvas id="fiberPulseCanvas"></canvas>
+
+        <!-- Interactive Realistic Fiber Assembly Canvas Frame -->
+        <div class="hero-fiber-canvas-frame">
+          <canvas id="fiberAssemblyCanvas"></canvas>
+          <div class="fiber-instruction-hint">HOVER OVER CABLE LAYERS &amp; FIBERS TO INSPECT STRAND COLOR &amp; LOSS • CLICK TO LAUNCH LASER PULSE</div>
+        </div>
+
+        <!-- Real-time Cable Layer Diagnostics Telemetry Dock -->
+        <div class="fiber-telemetry-dock">
+          <div class="fiber-stat">
+            <span class="label">INSPECTED LAYER:</span>
+            <strong id="activeFiberLayer" style="color: var(--brand-blue);">OUTER HDPE WEATHERPROOF JACKET</strong>
+          </div>
+          <div class="fiber-stat">
+            <span class="label">SPECIFICATION:</span>
+            <strong id="activeFiberSpec" style="color: var(--text-primary);">ITU-T G.652.D LOW WATER PEAK SINGLE-MODE</strong>
+          </div>
+          <div class="fiber-stat">
+            <span class="label">ATTENUATION:</span>
+            <strong id="activeFiberAttenuation" style="color: var(--green-pass);">&le; 0.19 dB/km @ 1550nm (PASS)</strong>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -143,33 +182,75 @@
 
     <!-- TIER-1 PARTNERS INFINITE MARQUEE -->
     <div class="clients-section">
-      <h3 class="clients-heading">TRUSTED BY INDUSTRY-LEADING TELECOM OPERATORS & CLIENTS</h3>
+      <h2 class="clients-heading">TRUSTED BY INDUSTRY-LEADING TELECOM OPERATORS &amp; CLIENTS</h2>
       <div class="client-marquee">
         <div class="client-track">
           <!-- Set 1 -->
-          <div class="client-logo-item"><img src="assets/clients/google-fiber.png" alt="Google Fiber" class="client-logo-img" loading="lazy"></div>
-          <div class="client-logo-item"><img src="assets/clients/verizon.png" alt="Verizon" class="client-logo-img" loading="lazy"></div>
-          <div class="client-logo-item"><img src="assets/clients/centurylink.png" alt="CenturyLink" class="client-logo-img" loading="lazy"></div>
-          <div class="client-logo-item"><img src="assets/clients/lumos.png" alt="Lumos Networks" class="client-logo-img" loading="lazy"></div>
-          <div class="client-logo-item"><img src="assets/clients/ziply.png" alt="Ziply Fiber" class="client-logo-img" loading="lazy"></div>
-          <div class="client-logo-item"><img src="assets/clients/client-att.png" alt="AT&T" class="client-logo-img" loading="lazy"></div>
-          <div class="client-logo-item"><img src="assets/clients/client-charter.png" alt="Charter Spectrum" class="client-logo-img" loading="lazy"></div>
-          <div class="client-logo-item"><img src="assets/clients/client-crown.png" alt="Crown Castle" class="client-logo-img" loading="lazy"></div>
-          <div class="client-logo-item"><img src="assets/clients/client-zayo.png" alt="Zayo" class="client-logo-img" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/google-fiber.png" alt="Google Fiber" class="client-logo-img" width="260" height="41" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/verizon.png" alt="Verizon" class="client-logo-img" width="260" height="161" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/centurylink.png" alt="CenturyLink" class="client-logo-img" width="260" height="65" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/lumos.png" alt="Lumos Networks" class="client-logo-img" width="260" height="61" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/ziply.png" alt="Ziply Fiber" class="client-logo-img" width="260" height="97" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/client-att.png" alt="AT&T" class="client-logo-img" width="239" height="95" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/client-charter.png" alt="Charter Spectrum" class="client-logo-img" width="260" height="76" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/client-crown.png" alt="Crown Castle" class="client-logo-img" width="260" height="106" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/client-zayo.png" alt="Zayo" class="client-logo-img" width="260" height="69" loading="lazy"></div>
           
           <!-- Set 2 for seamless loop -->
-          <div class="client-logo-item"><img src="assets/clients/google-fiber.png" alt="Google Fiber" class="client-logo-img" loading="lazy"></div>
-          <div class="client-logo-item"><img src="assets/clients/verizon.png" alt="Verizon" class="client-logo-img" loading="lazy"></div>
-          <div class="client-logo-item"><img src="assets/clients/centurylink.png" alt="CenturyLink" class="client-logo-img" loading="lazy"></div>
-          <div class="client-logo-item"><img src="assets/clients/lumos.png" alt="Lumos Networks" class="client-logo-img" loading="lazy"></div>
-          <div class="client-logo-item"><img src="assets/clients/ziply.png" alt="Ziply Fiber" class="client-logo-img" loading="lazy"></div>
-          <div class="client-logo-item"><img src="assets/clients/client-att.png" alt="AT&T" class="client-logo-img" loading="lazy"></div>
-          <div class="client-logo-item"><img src="assets/clients/client-charter.png" alt="Charter Spectrum" class="client-logo-img" loading="lazy"></div>
-          <div class="client-logo-item"><img src="assets/clients/client-crown.png" alt="Crown Castle" class="client-logo-img" loading="lazy"></div>
-          <div class="client-logo-item"><img src="assets/clients/client-zayo.png" alt="Zayo" class="client-logo-img" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/google-fiber.png" alt="Google Fiber" class="client-logo-img" width="260" height="41" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/verizon.png" alt="Verizon" class="client-logo-img" width="260" height="161" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/centurylink.png" alt="CenturyLink" class="client-logo-img" width="260" height="65" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/lumos.png" alt="Lumos Networks" class="client-logo-img" width="260" height="61" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/ziply.png" alt="Ziply Fiber" class="client-logo-img" width="260" height="97" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/client-att.png" alt="AT&T" class="client-logo-img" width="239" height="95" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/client-charter.png" alt="Charter Spectrum" class="client-logo-img" width="260" height="76" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/client-crown.png" alt="Crown Castle" class="client-logo-img" width="260" height="106" loading="lazy"></div>
+          <div class="client-logo-item"><img src="assets/clients/client-zayo.png" alt="Zayo" class="client-logo-img" width="260" height="69" loading="lazy"></div>
         </div>
       </div>
     </div>
+
+    <!-- NEW FEATURE: HOW WE WORK (INTERACTIVE BUSINESS FLOW) -->
+    <section id="pipeline" class="workflow-section">
+      <div class="section-tag">How Vionet Operates</div>
+      <h2 class="section-title">The Complete Telecom Project Lifecycle</h2>
+      <p class="section-desc">
+        From initial field walkouts and LiDAR capture to final municipal approval, see how our unified engineering pipeline accelerates deployment schedules and guarantees 98.5% first-pass permit approval.
+      </p>
+
+      <div class="pipeline-container">
+        <!-- Step 1 -->
+        <div class="pipeline-card active">
+          <span class="pipeline-step-badge">STAGE 01</span>
+          <h3>Field Data &amp; LiDAR</h3>
+          <p>On-site walkouts, LiDAR aerial spatial collection, and pole audits with make-ready structural analysis.</p>
+          <div class="pipeline-arrow" aria-hidden="true">&rarr;</div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="pipeline-card">
+          <span class="pipeline-step-badge">STAGE 02</span>
+          <h3>CAD &amp; GIS Network Design</h3>
+          <p>High-precision route drafting, fiber splice assignments, HFC architectures, and OSP/ISP layouts.</p>
+          <div class="pipeline-arrow" aria-hidden="true">&rarr;</div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="pipeline-card">
+          <span class="pipeline-step-badge">STAGE 03</span>
+          <h3>Permitting &amp; TCP Compliance</h3>
+          <p>Traffic Control Plans (MUTCD compliant), right-of-way easement filings, and municipal coordination.</p>
+          <div class="pipeline-arrow" aria-hidden="true">&rarr;</div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="pipeline-card">
+          <span class="pipeline-step-badge" style="color: var(--green-pass); border-color: rgba(0, 230, 118, 0.4);">STAGE 04</span>
+          <h3>Construction-Ready Output</h3>
+          <p>100% verified construction packages, as-built records, and first-pass permit stamps ready for buildout.</p>
+        </div>
+      </div>
+    </section>
 
     <!-- ABOUT SECTION -->
     <section id="about">
@@ -189,16 +270,16 @@
 
           <ul class="about-features-list">
             <li class="about-feature-item">
-              <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
               <div>
-                <h4>Structured QA/QC</h4>
+                <h3>Structured QA/QC</h3>
                 <p>Rigorous multi-tier verification process across all drafting packages.</p>
               </div>
             </li>
             <li class="about-feature-item">
-              <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
               <div>
-                <h4>Flexible Delivery</h4>
+                <h3>Flexible Delivery</h3>
                 <p>Rapidly scale engineering resources based on urgency and volume.</p>
               </div>
             </li>
@@ -206,9 +287,9 @@
         </div>
 
         <div class="about-visual-card">
-          <img src="assets/brand/about-us.webp" alt="Vionet Engineering Field and Design Team" class="about-visual-img" loading="lazy">
+          <img src="assets/brand/about-us.webp" alt="Vionet Engineering Field and Design Team" class="about-visual-img" width="700" height="700" loading="lazy">
           <div class="about-badge-overlay">
-            <div style="color: var(--cyan-primary); font-weight: 700; margin-bottom: 2px;">END-TO-END LIFECYCLE</div>
+            <div style="color: var(--cyan-primary); font-weight: 700; margin-bottom: 3px;">END-TO-END LIFECYCLE</div>
             <div style="color: var(--text-muted);">Route Planning • Fielding • Permitting • As-Built</div>
           </div>
         </div>
@@ -253,43 +334,68 @@
             </p>
           </div>
           <div>
-            <img src="assets/services/engineering-services.webp" alt="Engineering Services" style="width: 100%; border-radius: 8px; border: 1px solid var(--border-subtle);" loading="lazy">
+            <img src="assets/services/engineering-services.webp" alt="Engineering Services" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--border-subtle);" width="800" height="533" loading="lazy">
+          </div>
+        </div>
+
+        <!-- Interactive FTTx Fiber Architecture & Optical Link Budget Simulator -->
+        <div class="interactive-simulator-box" style="margin-bottom: 2.5rem;">
+          <div class="sim-header">
+            <span>FTTx END-TO-END OPTICAL DISTRIBUTION NETWORK (ODN) SIMULATION</span>
+            <span class="tag">CENTRAL OFFICE (ISP) &rarr; FEEDER &rarr; FDH SPLITTER &rarr; DISTRIBUTION &rarr; MST TERMINAL &rarr; DROP &rarr; PREMISE ONT</span>
+          </div>
+          <div id="fttxArchBox" class="fttx-arch-container"></div>
+          <div class="fttx-controls-bar">
+            <div class="fttx-split-buttons">
+              <span class="ctrl-label">SELECT ARCHITECTURE:</span>
+              <button class="fttx-mode-btn active" data-arch="centralized">CENTRALIZED SPLIT (1:32 FDH CABINET)</button>
+              <button class="fttx-mode-btn" data-arch="distributed">DISTRIBUTED CASCADE SPLIT (1:4 FDH &rarr; 1:8 MST)</button>
+              <button class="fttx-mode-btn" data-arch="rural">LONG-HAUL RURAL FTTH (OPTICAL REACH &gt; 20 KM)</button>
+            </div>
+            <div class="fttx-action-hint">CLICK ANY NETWORK STAGE OR NODE TO TRACE PHOTON PROPAGATION</div>
+          </div>
+          <div class="fttx-telemetry-hud">
+            <span>NETWORK STAGE: <strong id="fttxStageName">CENTRAL OFFICE (OLT HEADEND)</strong></span>
+            <span>TOPOLOGY: <strong id="fttxSplitRatio">CENTRALIZED 1:32 GPON/XGS-PON</strong></span>
+            <span>TOTAL INSERTION LOSS: <strong id="fttxLoss">15.4 dB (HEALTHY: &lt; 28 dB)</strong></span>
+            <span>OPTICAL BUDGET MARGIN: <strong id="fttxMargin" style="color: #00e676;">+12.6 dB HEADROOM</strong></span>
+            <span>HOMES PASSED: <strong id="fttxHomes">1,024 HOMES SERVICED</strong></span>
           </div>
         </div>
 
         <div class="subservices-grid">
           <div class="service-card">
-            <img src="assets/services/planning-design.webp" alt="Planning" class="service-img-preview" loading="lazy">
+            <img src="assets/services/planning-design.webp" alt="Planning" class="service-img-preview" width="640" height="426" loading="lazy">
             <h4>Planning</h4>
             <p>We provide comprehensive project planning services, balancing technical precision with real-world field considerations. Our planners collaborate with engineering and construction teams to deliver optimized, scalable network plans that reduce future costs and deployment risks.</p>
           </div>
 
           <div class="service-card">
-            <img src="assets/services/design.webp" alt="Design" class="service-img-preview" loading="lazy">
+            <img src="assets/services/design.webp" alt="Design" class="service-img-preview" width="640" height="381" loading="lazy">
             <h4>Design</h4>
             <p>Our experienced designers craft detailed network designs ready for deployment. We utilize the latest tools and adhere to strict design standards, ensuring seamless integration with your existing infrastructure and delivering superior performance.</p>
           </div>
 
           <div class="service-card">
-            <img src="assets/services/drafting.webp" alt="Drafting" class="service-img-preview" loading="lazy">
+            <img src="assets/services/drafting.webp" alt="Drafting" class="service-img-preview" width="640" height="330" loading="lazy">
             <h4>Drafting</h4>
             <p>We create high-quality, construction-ready drafting packages that ensure field teams can execute with clarity and accuracy. Our drafts cover route plans, splice diagrams, and construction notes — reducing rework and driving efficiency.</p>
           </div>
 
           <div class="service-card">
-            <img src="assets/services/permit.webp" alt="Permitting" class="service-img-preview" loading="lazy">
+            <img src="assets/services/permit.webp" alt="Permitting" class="service-img-preview" width="640" height="640" loading="lazy">
             <h4>Permitting</h4>
             <p>We manage complex permitting processes proactively with municipalities and regulatory bodies. Our team delivers complete, accurate permit packages and ensures all required approvals are obtained on time — keeping your project on schedule.</p>
           </div>
 
           <div class="service-card">
-            <img src="assets/services/tcp.webp" alt="Traffic Control Plan" class="service-img-preview" loading="lazy">
+            <img src="assets/services/tcp.webp" alt="Traffic Control Plan" class="service-img-preview" width="640" height="426" loading="lazy">
             <h4>Traffic Control Plan (TCP)</h4>
             <p>Our traffic control experts design safe, compliant Traffic Control Plans that protect public safety and construction crews. Every TCP developed aligns with local MUTCD guidelines and challenges of each project site.</p>
           </div>
 
           <div class="service-card">
-            <img src="assets/services/turnkey.webp" alt="Turn-Key Network Services" class="service-img-preview" loading="lazy">
+            <img src="assets/services/turnkey.webp" alt="Turn-Key Network Services" class="service-img-preview" width="640" height="330" loading="lazy">
             <h4>Turn-Key Network Services</h4>
             <p>End-to-end Turn-Key Network Services allow clients to focus on core business while we handle technical and logistical complexity. From engineering and permitting to utility relocations, we deliver complete, ready-to-deploy solutions.</p>
           </div>
@@ -298,6 +404,7 @@
 
       <!-- TAB 2: WIRELESS SERVICES -->
       <div class="tab-pane" id="tab-wireless">
+        <div id="wireless" style="position: relative; top: -90px; visibility: hidden;"></div>
         <div class="pillar-banner">
           <div class="pillar-banner-text">
             <h3>Wireless Services</h3>
@@ -306,40 +413,45 @@
             </p>
           </div>
           <div>
-            <img src="assets/services/wireless.webp" alt="Wireless Services" style="width: 100%; border-radius: 8px; border: 1px solid var(--border-subtle);" loading="lazy">
+            <img src="assets/services/wireless.webp" alt="Wireless Services" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--border-subtle);" width="800" height="533" loading="lazy">
           </div>
         </div>
 
-        <!-- Interactive 5G Beamforming Simulator -->
+        <!-- Interactive 5G Beamforming Simulator with Frequency Switcher -->
         <div class="interactive-simulator-box">
           <div class="sim-header">
             <span>5G BEAMFORMING & MACRO CELL COVERAGE SIMULATION</span>
-            <span class="tag">HARMONIC RF PROPAGATION ACTIVE</span>
+            <span class="tag">CLICK BAND TO SWITCH RF PROPAGATION</span>
           </div>
           <div id="wirelessBeamBox" class="wireless-beam-container"></div>
+          <div class="rf-controls-bar">
+            <span>SELECT CARRIER BAND:</span>
+            <button class="rf-mode-btn active" data-mode="sub6">SUB-6 GHz (WIDE SECTOR COVERAGE)</button>
+            <button class="rf-mode-btn" data-mode="mmwave">mmWave 28/39 GHz (PENCIL BEAMFORMING)</button>
+          </div>
         </div>
 
         <div class="subservices-grid" style="margin-top: 2rem;">
           <div class="service-card">
-            <img src="assets/services/network-arch.webp" alt="Network Architecture" class="service-img-preview" loading="lazy">
+            <img src="assets/services/network-arch.webp" alt="Network Architecture" class="service-img-preview" width="640" height="330" loading="lazy">
             <h4>Network Architecture</h4>
             <p>We design complete wireless network architectures that deliver superior coverage, capacity, and performance. Our architecture services support macro networks, small cells, DAS, and emerging wireless technologies built for the future.</p>
           </div>
 
           <div class="service-card">
-            <img src="assets/services/network-planning.webp" alt="Planning" class="service-img-preview" loading="lazy">
+            <img src="assets/services/network-planning.webp" alt="Planning" class="service-img-preview" width="640" height="330" loading="lazy">
             <h4>Planning</h4>
             <p>Our advanced planning services combine RF modeling, site analysis, and field validation to ensure your wireless network delivers optimal performance. We help clients avoid costly rework and drive better outcomes from day one.</p>
           </div>
 
           <div class="service-card">
-            <img src="assets/services/in-building.webp" alt="In-building Solutions" class="service-img-preview" loading="lazy">
+            <img src="assets/services/in-building.webp" alt="In-building Solutions" class="service-img-preview" width="640" height="330" loading="lazy">
             <h4>In-building Solutions (IBW/DAS)</h4>
             <p>We engineer in-building wireless solutions that provide seamless coverage where it matters most: offices, campuses, venues, and public spaces. Our designs combine cutting-edge technology to ensure reliable indoor connectivity.</p>
           </div>
 
           <div class="service-card">
-            <img src="assets/services/network-integration.webp" alt="Network Integration" class="service-img-preview" loading="lazy">
+            <img src="assets/services/network-integration.webp" alt="Network Integration" class="service-img-preview" width="640" height="330" loading="lazy">
             <h4>Network Integration</h4>
             <p>End-to-end network integration services ensuring every element of your wireless network hardware, software, and systems works together flawlessly. Our integration teams test, validate, and optimize for peak performance.</p>
           </div>
@@ -348,6 +460,7 @@
 
       <!-- TAB 3: GIS & MAPPING SERVICES -->
       <div class="tab-pane" id="tab-gis">
+        <div id="gis" style="position: relative; top: -90px; visibility: hidden;"></div>
         <div class="pillar-banner">
           <div class="pillar-banner-text">
             <h3>GIS & Mapping Services</h3>
@@ -356,40 +469,54 @@
             </p>
           </div>
           <div>
-            <img src="assets/services/gis.webp" alt="GIS & Mapping Services" style="width: 100%; border-radius: 8px; border: 1px solid var(--border-subtle);" loading="lazy">
+            <img src="assets/services/gis.webp" alt="GIS & Mapping Services" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--border-subtle);" width="800" height="533" loading="lazy">
           </div>
         </div>
 
-        <!-- Interactive LiDAR Sweep Simulator -->
+        <!-- Interactive LiDAR & GIS Mobile Mapping Corridor Simulator -->
         <div class="interactive-simulator-box">
           <div class="sim-header">
-            <span>LIDAR SPATIAL POINT CLOUD SCANNING SIMULATOR</span>
-            <span class="tag">ELEVATION SWEEP ACTIVE</span>
+            <span>GIS & MOBILE LIDAR CORRIDOR SURVEY SIMULATION</span>
+            <span class="tag">REAL-TIME TELECOM ASSET DIGITIZATION & CLEARANCE AUDIT</span>
           </div>
           <div id="lidarSweepBox" class="lidar-sweep-container"></div>
+          <div class="gis-controls-bar">
+            <div class="gis-layer-btns">
+              <span class="ctrl-label">SURVEY VIEW:</span>
+              <button class="gis-mode-btn active" data-view="classified">CLASSIFIED ASSETS (POLES / FIBER / VEG)</button>
+              <button class="gis-mode-btn" data-view="elevation">HEATMAP ELEVATION (Z-AXIS)</button>
+              <button class="gis-mode-btn" data-view="clearance">CLEARANCE ENVELOPE (SAFETY AUDIT)</button>
+            </div>
+          </div>
+          <div class="gis-telemetry-hud">
+            <span>TARGET ASSET: <strong id="lidarAssetCount">UTILITY POLE #VL-4092</strong></span>
+            <span>MEASURED HEIGHT: <strong id="lidarElevation">38.4 FT</strong></span>
+            <span>SAFETY CLEARANCE: <strong id="lidarClearance" style="color: #00e676;">22.6 FT (PASS - NESC)</strong></span>
+            <span>GEO-ACCURACY: <strong style="color: var(--brand-orange);">&plusmn;1.8 CM RTK</strong></span>
+          </div>
         </div>
 
         <div class="subservices-grid" style="margin-top: 2rem;">
           <div class="service-card">
-            <img src="assets/services/digitization.webp" alt="Digitization & Base Mapping" class="service-img-preview" loading="lazy">
+            <img src="assets/services/digitization.webp" alt="Digitization & Base Mapping" class="service-img-preview" width="640" height="330" loading="lazy">
             <h4>Digitization & Base Mapping</h4>
             <p>We digitize legacy records and create base maps that serve as the foundation for modern network designs. Our precision mapping ensures every line, asset, and easement is captured accurately, supporting engineering and permitting.</p>
           </div>
 
           <div class="service-card">
-            <img src="assets/services/town-planning.webp" alt="Town Planning" class="service-img-preview" loading="lazy">
+            <img src="assets/services/town-planning.webp" alt="Town Planning" class="service-img-preview" width="640" height="330" loading="lazy">
             <h4>Town Planning</h4>
             <p>We collaborate with municipalities and developers to deliver GIS-driven town planning services. Our work supports smart growth, efficient infrastructure deployment, and informed zoning decisions — helping cities and networks evolve together.</p>
           </div>
 
           <div class="service-card">
-            <img src="assets/services/asset-mapping.webp" alt="Asset Mapping" class="service-img-preview" loading="lazy">
+            <img src="assets/services/asset-mapping.webp" alt="Asset Mapping" class="service-img-preview" width="640" height="330" loading="lazy">
             <h4>Asset Mapping</h4>
             <p>Detailed asset mapping services that give operators complete visibility into their network infrastructure. From poles and ducts to manholes and wireless assets, our maps ensure that every component is documented and managed effectively.</p>
           </div>
 
           <div class="service-card">
-            <img src="assets/services/smart-cities.webp" alt="Smart Cities" class="service-img-preview" loading="lazy">
+            <img src="assets/services/smart-cities.webp" alt="Smart Cities" class="service-img-preview" width="640" height="330" loading="lazy">
             <h4>Smart Cities</h4>
             <p>We help cities become smarter by integrating GIS with next-generation telecom and IoT infrastructure. Our mapping supports the development of connected urban environments, enabling better services and improved efficiency.</p>
           </div>
@@ -398,6 +525,7 @@
 
       <!-- TAB 4: FIELD SERVICES & OCALC -->
       <div class="tab-pane" id="tab-field">
+        <div id="field" style="position: relative; top: -90px; visibility: hidden;"></div>
         <div class="pillar-banner">
           <div class="pillar-banner-text">
             <h3>Field Services</h3>
@@ -406,7 +534,7 @@
             </p>
           </div>
           <div>
-            <img src="assets/services/field-services.webp" alt="Field Services" style="width: 100%; border-radius: 8px; border: 1px solid var(--border-subtle);" loading="lazy">
+            <img src="assets/services/field-services.webp" alt="Field Services" style="width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--border-subtle);" width="800" height="533" loading="lazy">
           </div>
         </div>
 
@@ -452,37 +580,37 @@
 
         <div class="subservices-grid" style="margin-top: 2rem;">
           <div class="service-card">
-            <img src="assets/services/as-built.webp" alt="Full Plant As-built Walkout" class="service-img-preview" loading="lazy">
+            <img src="assets/services/as-built.webp" alt="Full Plant As-built Walkout" class="service-img-preview" width="640" height="330" loading="lazy">
             <h4>Full Plant As-built Walkout</h4>
             <p>Detailed as-built walkouts capturing the true state of your network. Field teams document every asset and connection accurately, providing engineering teams with a trusted foundation for future work.</p>
           </div>
 
           <div class="service-card">
-            <img src="assets/services/site-surveys.webp" alt="Site Surveys ISP/OSP" class="service-img-preview" loading="lazy">
+            <img src="assets/services/site-surveys.webp" alt="Site Surveys ISP/OSP" class="service-img-preview" width="640" height="330" loading="lazy">
             <h4>Site Surveys (ISP/OSP)</h4>
             <p>Thorough Inside Plant (ISP) and Outside Plant (OSP) site surveys capturing every verified field detail required for construction, reducing errors and accelerating project timelines.</p>
           </div>
 
           <div class="service-card">
-            <img src="assets/services/forced-relocate.webp" alt="Forced Relocate Fielding" class="service-img-preview" loading="lazy">
+            <img src="assets/services/forced-relocate.webp" alt="Forced Relocate Fielding" class="service-img-preview" width="900" height="464" loading="lazy">
             <h4>Forced Relocate Fielding</h4>
             <p>Rapid response fielding for road widenings and utility relocations. Our proven fielding process minimizes network downtime and helps clients stay ahead of mandatory deadlines.</p>
           </div>
 
           <div class="service-card">
-            <img src="assets/services/pole-audits.webp" alt="Pole Data Collection & Audits" class="service-img-preview" loading="lazy">
+            <img src="assets/services/pole-audits.webp" alt="Pole Data Collection & Audits" class="service-img-preview" width="640" height="330" loading="lazy">
             <h4>Pole Data Collection / Audits</h4>
             <p>Comprehensive pole data collection including clearances, attachment heights, and structural details supporting Make Ready engineering and NESC joint-use compliance.</p>
           </div>
 
           <div class="service-card">
-            <img src="assets/services/ocalc.webp" alt="Pole Analysis OCALC" class="service-img-preview" loading="lazy">
+            <img src="assets/services/ocalc.webp" alt="Pole Analysis OCALC" class="service-img-preview" width="640" height="426" loading="lazy">
             <h4>Pole Analysis (OCALC)</h4>
             <p>Using industry-standard OCALC tools, we conduct advanced pole structural analysis to validate equipment loading and wind forces, ensuring utility approvals without risk.</p>
           </div>
 
           <div class="service-card">
-            <img src="assets/services/lidar.webp" alt="LiDAR Collection" class="service-img-preview" loading="lazy">
+            <img src="assets/services/lidar.webp" alt="LiDAR Collection" class="service-img-preview" width="640" height="410" loading="lazy">
             <h4>LiDAR Collection</h4>
             <p>State-of-the-art mobile and aerial LiDAR spatial data collection supporting smart city engineering, clearance verification, and rich geospatial asset management.</p>
           </div>
@@ -490,51 +618,41 @@
       </div>
     </section>
 
-    <!-- CAREERS SECTION -->
-    <section id="careers">
-      <div class="section-tag">Join Our Engineering Team</div>
-      <h2 class="section-title">Current Career Openings</h2>
-      <p class="section-desc">
-        Join our core telecom engineering center in Hyderabad, delivering mission-critical US telecom infrastructure projects.
-      </p>
-
-      <div class="careers-grid">
-        <div class="career-card">
-          <div>
-            <div class="career-meta">
-              <span>LOCATION: HYDERABAD, TELANGANA</span>
-              <span>• FULL-TIME</span>
-            </div>
-            <h3 class="career-title">ATT Telecom Engineers</h3>
-            <p class="career-desc">
-              Looking for experienced telecom engineers with proven expertise in AT&T network engineering guidelines, OSP/ISP route design, and fiber deployment standards.
-            </p>
-          </div>
-          <a href="#contactus" class="btn-outline" style="align-self: flex-start;">
-            <span>Apply Now & Submit CV</span>
+    <!-- CAREERS BANNER / SEPARATE PAGE INVITATION -->
+    <section id="careers-preview" style="padding-top: 3rem; padding-bottom: 3.5rem;">
+      <div class="pillar-banner" style="background: linear-gradient(135deg, rgba(8, 14, 30, 0.95), rgba(13, 22, 41, 0.85)); border: 1px solid rgba(0, 123, 255, 0.25);">
+        <div class="pillar-banner-text">
+          <div class="section-tag">Talent & Career Opportunities</div>
+          <h2 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem; color: #ffffff;">Build Your Career in Telecom Engineering</h2>
+          <p style="color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.75rem; font-size: 1.05rem;">
+            Join our core telecom engineering delivery center in Hyderabad, Telangana. We are hiring experienced AT&T telecom engineers, AutoCAD/SpatialNET drafters, GIS/LiDAR specialists, and OCALC pole-loading analysts to engineer Tier-1 US communications infrastructure.
+          </p>
+          <a href="careers.html" class="btn-cta">
+            <span>Explore All Open Roles & Apply</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
         </div>
-
-        <div class="career-card">
-          <div>
-            <div class="career-meta">
-              <span>LOCATION: HYDERABAD, TELANGANA</span>
-              <span>• FULL-TIME</span>
-            </div>
-            <h3 class="career-title">CAD Drafting & OSP Engineers</h3>
-            <p class="career-desc">
-              Seeking AutoCAD and SpatialNET experts specialized in FTTx drafting, pole-loading packages, permit documentation, and construction-ready drawing sets.
-            </p>
+        <div style="display: flex; flex-direction: column; gap: 1rem; background: rgba(6, 11, 23, 0.6); padding: 1.5rem; border-radius: 10px; border: 1px solid var(--border-subtle);">
+          <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--brand-orange); font-weight: 700;">HYDERABAD DELIVERY CENTER (HQ)</div>
+          <div style="color: var(--text-primary); font-size: 0.92rem; line-height: 1.6;">
+            &bull; AT&T Telecom Network Engineers (OSP/ISP)<br>
+            &bull; CAD Drafting & SpatialNET Specialists<br>
+            &bull; GIS & Mobile LiDAR Data Analysts<br>
+            &bull; O-CALC Pole Loading Structural Engineers
           </div>
-          <a href="#contactus" class="btn-outline" style="align-self: flex-start;">
-            <span>Apply Now & Submit CV</span>
-          </a>
+          <div style="font-size: 0.82rem; color: var(--text-muted); padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+            Full-time &bull; Competitive US-market compensation &bull; Tier-1 global projects
+          </div>
         </div>
       </div>
     </section>
 
     <!-- CONTACT & QUOTE SECTION -->
     <section id="contactus">
+      <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
+        <div class="section-tag">Let's Connect</div>
+        <h2 class="section-title">Partner with Vionet Engineering</h2>
+      </div>
       <div class="contact-section-grid">
         <div class="contact-info-panel">
           <div class="section-tag">Let's Build Something Great</div>
@@ -545,14 +663,14 @@
 
           <ul class="contact-detail-items">
             <li class="contact-item">
-              <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
               <div>
                 <strong>Global Delivery Center:</strong><br>
                 <span>2nd Floor, Trendz Trinity, Plot No 18, Madhapur, Gafoornagar, Hyderabad, Telangana 500081</span>
               </div>
             </li>
             <li class="contact-item">
-              <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
               <div>
                 <strong>Professional Networks:</strong><br>
                 <a href="https://www.linkedin.com/company/vionet-engineering/" target="_blank" rel="noopener" style="color: var(--cyan-primary); text-decoration: none;">LinkedIn: Vionet Engineering</a> | 
@@ -561,15 +679,15 @@
             </li>
           </ul>
 
-          <div style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-subtle);">
-            <img src="assets/brand/vionet-loc.webp" alt="Vionet Engineering Office Location" style="width: 100%; height: auto; display: block;" loading="lazy">
+          <div style="border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle); box-shadow: 0 15px 35px rgba(0,0,0,0.5);">
+            <img src="assets/brand/vionet-loc.webp" alt="Vionet Engineering Office Location" style="width: 100%; height: auto; display: block;" width="900" height="506" loading="lazy">
           </div>
         </div>
 
         <!-- Request a Quote Form -->
         <div class="form-card">
-          <h4 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Request a Project Quote</h4>
-          <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 1.5rem;">Fill out the form below and our engineering team will get in touch promptly.</p>
+          <h3 style="font-size: 1.5rem; margin-bottom: 0.6rem; font-weight: 700;">Request a Project Quote</h3>
+          <p style="color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 1.75rem;">Fill out the form below and our engineering team will get in touch promptly.</p>
 
           <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Thank you! Your quote request has been recorded.');">
             <div class="form-group-row">
@@ -605,9 +723,9 @@
               <textarea id="message" class="form-textarea" placeholder="Describe project locations, route mileage, pole counts, or schedule requirements..." required></textarea>
             </div>
 
-            <button type="submit" class="btn-cta" style="width: 100%; justify-content: center; padding: 0.85rem;">
+            <button type="submit" class="btn-cta" style="width: 100%; justify-content: center; padding: 0.95rem; font-size: 0.95rem;">
               <span>Submit Request</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
           </form>
         </div>
@@ -619,14 +737,14 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <img src="assets/brand/vionet-logo.webp" alt="Vionet Engineering Logo" height="36" loading="lazy">
+        <img src="assets/brand/vionet-logo.webp" alt="Vionet Engineering Logo" width="123" height="36" loading="lazy">
         <p>
           End-to-end telecom engineering solutions for designing, deploying, and optimizing high-performance communication networks across the United States.
         </p>
       </div>
 
       <div class="footer-col">
-        <h5>Engineering Pillars</h5>
+        <h3 class="footer-title">Engineering Pillars</h3>
         <ul class="footer-links">
           <li><a href="#services">Engineering & Permit Services</a></li>
           <li><a href="#wireless">Wireless Services</a></li>
@@ -636,18 +754,19 @@
       </div>
 
       <div class="footer-col">
-        <h5>Quick Links</h5>
+        <h3 class="footer-title">Quick Links</h3>
         <ul class="footer-links">
           <li><a href="#about">About Vionet</a></li>
-          <li><a href="#careers">Careers (Hyderabad)</a></li>
+          <li><a href="#pipeline">Project Lifecycle</a></li>
+          <li><a href="careers.html">Careers (Hyderabad)</a></li>
+          <li><a href="contact.html">Contact Us (Full Details)</a></li>
           <li><a href="#contactus">Schedule Discovery</a></li>
-          <li><a href="#contactus">Request a Quote</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
-        <h5>Delivery Center</h5>
-        <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+        <h3 class="footer-title">Delivery Center</h3>
+        <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
           2nd Floor, Trendz Trinity, Plot No 18, Madhapur, Gafoornagar, Hyderabad, Telangana 500081
         </p>
       </div>

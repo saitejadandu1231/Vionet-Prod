@@ -1790,17 +1790,51 @@ function initLidarLaserSweep() {
 function initMobileMenu() {
   const toggle = document.querySelector('.mobile-menu-toggle');
   const links = document.querySelector('.nav-links');
-  if (toggle && links) {
-    toggle.addEventListener('click', () => {
-      links.classList.toggle('mobile-open');
-    });
+  if (!toggle || !links) return;
 
-    links.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        links.classList.remove('mobile-open');
-      });
-    });
+  function openMenu() {
+    links.classList.add('mobile-open');
+    toggle.classList.add('active');
+    toggle.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('menu-open');
   }
+
+  function closeMenu() {
+    links.classList.remove('mobile-open');
+    toggle.classList.remove('active');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('menu-open');
+  }
+
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (links.classList.contains('mobile-open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  // Close when clicking any nav link
+  links.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      closeMenu();
+    });
+  });
+
+  // Close when clicking outside
+  document.addEventListener('click', (e) => {
+    if (links.classList.contains('mobile-open') && !links.contains(e.target) && !toggle.contains(e.target)) {
+      closeMenu();
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && links.classList.contains('mobile-open')) {
+      closeMenu();
+    }
+  });
 }
 
 /* -----------------------------------------------------------

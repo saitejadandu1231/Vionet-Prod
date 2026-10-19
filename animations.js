@@ -2059,9 +2059,16 @@ function initLidarLaserSweep() {
 function initMobileMenu() {
   const toggle = document.querySelector('.mobile-menu-toggle');
   const links = document.querySelector('.nav-links');
+  const navbar = document.querySelector('.navbar');
   if (!toggle || !links) return;
 
   function openMenu() {
+    if (navbar && window.innerWidth <= 960) {
+      const navH = navbar.offsetHeight || 60;
+      links.style.top = `${navH}px`;
+      links.style.height = `calc(100vh - ${navH}px)`;
+      links.style.height = `calc(100dvh - ${navH}px)`;
+    }
     links.classList.add('mobile-open');
     toggle.classList.add('active');
     toggle.setAttribute('aria-expanded', 'true');
@@ -2073,6 +2080,8 @@ function initMobileMenu() {
     toggle.classList.remove('active');
     toggle.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('menu-open');
+    links.style.top = '';
+    links.style.height = '';
   }
 
   toggle.addEventListener('click', (e) => {
